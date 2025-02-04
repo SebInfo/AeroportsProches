@@ -1,0 +1,53 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche Aéroport</title>
+</head>
+<body>
+    <h1>Carte Interactive : Recherche d'Aéroport</h1>
+    <form method="POST" id="airport-form">
+        <label for="code_oaci">Code OACI :</label>
+        <input type="text" id="code_oaci" name="code_oaci" placeholder="Ex: LFPG" value="{{ code_oaci }}" required>
+        <input type="checkbox" id="show_nearby" name="show_nearby" onchange="submitForm()"
+        {% if show_nearby %}checked{% endif %}>
+        <label for="show_nearby">Afficher les 4 aéroports les plus proches</label>
+        <!-- Liste déroulante pour choisir le type d'aéroport -->
+        <label for="airport_type">Type d'aéroport :</label>
+        <select name="airport_type">
+            <option value="all" selected>Tous les types</option>
+            <option value="large_airport">Grand aéroport</option>
+            <option value="medium_airport">Aéroport moyen</option>
+        </select>
+
+        <br>
+        <button type="submit">Rechercher</button>
+    </form>
+    <script>
+        function submitForm() {
+            const codeInput = document.getElementById("code_oaci");
+            if (!codeInput.value) {
+                alert("Veuillez entrer un code OACI avant de cocher la case.");
+                return;
+            }
+            document.getElementById('airport-form').submit();
+        }
+    </script>
+    {% if airport_name %}
+        <h2>Résultat :</h2>
+        <p>
+            {% if airport_name == "Aéroport non trouvé" %}
+                Aucun aéroport trouvé pour le code OACI : <strong>{{ code_oaci }}</strong>.
+            {% else %}
+                L'aéroport correspondant au code OACI <strong>{{ type }}{{ code_oaci }}</strong> est :
+                <strong>{{ airport_name }}</strong>.
+            {% endif %}
+        </p>
+    {% endif %}
+
+    {% if map_path %}
+        <h2>Carte de l'Aéroport :</h2>
+        <iframe src="/static/map.html" width="800px" height="400px" style="border:none;"></iframe>
+    {% endif %}
+</body>
+</html>
