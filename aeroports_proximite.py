@@ -11,7 +11,7 @@ app = Flask(__name__)
 df = pd.read_csv("csv/airports.csv")
 
 # Filtrer et renommer les colonnes pour plus de clarté
-filtered_df = df[["ident", "name", "type", "latitude_deg", "longitude_deg", "iso_country"]]
+filtered_df = df[["ident", "name", "type", "latitude_deg", "longitude_deg", "iso_country"]].copy()
 filtered_df.rename(columns={"ident": "code_oaci", "latitude_deg": "lat", "longitude_deg": "lon"}, inplace=True)
 
 # Ajouter une colonne géométrique pour représenter les coordonnées
